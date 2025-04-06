@@ -1,0 +1,106 @@
+{
+  "menu": [
+    {
+      "id": 1,
+      "name": "small Burger",
+      "count": 0,
+      "price": "15",
+      "isInCart": false,
+      "category": 1
+    },
+    {
+      "id": 2,
+      "name": "small CheeseCake",
+      "count": 0,
+      "price": "10",
+      "isInCart": false,
+      "category": 2
+    },
+    {
+      "id": 3,
+      "name": "small Fries",
+      "count": 0,
+      "price": "10",
+      "isInCart": false,
+      "category": 3
+    },
+    {
+      "id": 4,
+      "name": "small Stake",
+      "count": 0,
+      "price": "15",
+      "isInCart": false,
+      "category": 4
+    },
+    {
+      "id": 10,
+      "name": "Burger",
+      "count": 0,
+      "price": "35",
+      "isInCart": false,
+      "category": 1
+    },
+    {
+      "id": 20,
+      "name": "CheeseCake",
+      "count": 0,
+      "price": "30",
+      "isInCart": false,
+      "category": 2
+    },
+    {
+      "id": 30,
+      "name": "Fries",
+      "count": 0,
+      "price": "30",
+      "isInCart": false,
+      "category": 3
+    },
+    {
+      "id": 40,
+      "name": "Stake",
+      "count": 0,
+      "price": "35",
+      "isInCart": false,
+      "category": 4
+    },
+    {
+      "id": 100,
+      "name": "Large Burger",
+      "count": 0,
+      "price": "50",
+      "isInCart": false,
+      "category": 1
+    },
+    {
+      "id": 200,
+      "name": "Large CheeseCake",
+      "count": 0,
+      "price": "40",
+      "isInCart": false,
+      "category": 2
+    },
+    {
+      "id": 300,
+      "name": "Large Fries",
+      "count": 0,
+      "price": "40",
+      "isInCart": false,
+      "category": 3
+    },
+    {
+      "id": 400,
+      "name": "Large Stake",
+      "count": 0,
+      "price": "50",
+      "isInCart": false,
+      "category": 4
+    }
+  ],
+  "categories": [
+    { "id": 1, "name": "Burger" },
+    { "id": 2, "name": "CheeseCake" },
+    { "id": 3, "name": "Fries" },
+    { "id": 4, "name": "Stake" }
+  ]
+}
