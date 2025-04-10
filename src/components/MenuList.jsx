@@ -1,18 +1,20 @@
+import { useContext } from "react";
 import SearchInput from "./searchInput";
+import { ItemsContext } from "../contexts/items";
 
-export default function MenuList({
-  items,
-  handleAddToCart,
-  handleSelectedPage,
-  paginationNum,
-  noOfPage,
-  handleSearchChange,
-}) {
+export default function MenuList() {
+  const {
+    filteredItems,
+    handleAddToCart,
+    handleSelectedPage,
+    paginationNum,
+    noOfPage,
+    handleSearchChange,
+  } = useContext(ItemsContext);
   let pages = [];
   for (let i = 1; i < paginationNum + 1; i++) {
     pages.push(i);
   }
-
   return (
     <div className="flex-1/3 overflow-x-auto">
       <div className="mt-3 ml-2">
@@ -29,7 +31,7 @@ export default function MenuList({
           </tr>
         </thead>
         <tbody>
-          {items.map((itm) => (
+          {filteredItems.map((itm) => (
             <tr className="bg-base-200" key={itm.id}>
               <td className="font-[600] ">{itm.name}</td>
               <td>{itm.price}$</td>

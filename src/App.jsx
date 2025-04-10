@@ -1,35 +1,47 @@
-import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router";
-import axios from "axios";
+//*CSS FILE
 import "./index.css";
-import Cart from "./components/Cart";
+import "react-toastify/dist/ReactToastify.css";
+//*Pages Components
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
+import Cart from "./components/Cart";
 import About from "./pages/About";
+import NotFound from "./pages/NotFound";
+//* utilties
+import { useState } from "react";
+import { Route, Routes } from "react-router";
+import { ItemsContext } from "./contexts/items";
+import useFetchItems from "./hooks/useFetchItems";
+import Admin from "./pages/Admin";
+import { ToastContainer } from "react-toastify";
 function App() {
-  const [items, setItems] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loadingItems, setLoadingItems] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(0);
   let filteredItems = [];
-
   const pageSize = 4;
   const [noOfPage, setNoOfPage] = useState(1);
   let pageStart = (noOfPage - 1) * noOfPage;
-
   const [searchForItem, setSearchForItem] = useState("");
-  useEffect(() => {
-    const getData = async () => {
-      const response = await axios.get("http://localhost:3000/menu");
-      const catsResponse = await axios.get("http://localhost:3000/categories");
-      setItems(response.data);
-      setCategories(catsResponse.data);
-      setLoadingItems(false);
-      handleSelectedCategory(0);
-    };
-    setLoadingItems(true);
-    setTimeout(getData, 2000);
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
+  // menu handlers
+
+  const handleSelectedCategory = (id) => {
+    setSelectedCategory(id);
+    setSearchForItem("");
+    setNoOfPage(1);
+  };
+  const handleSelectedPage = (id) => {
+    setNoOfPage(id);
+  };
+
+  const handleSearchChange = (e) => {
+    setSelectedCategory(0);
+    setNoOfPage(1);
+    setSearchForItem(e.target.value);
+  };
+
+  //~fetch items and set required data
+
+  const { items, setItems, categories, selectedCategory, setSelectedCategory } =
+    useFetchItems({ handleSelectedCategory, isLoading, setIsLoading });
 
   // cart handlers
   const handleIncrement = (id) => {
@@ -46,8 +58,9 @@ function App() {
         ...item,
         count:
           item.id === id
-            ? item.count - 1 < 0
-              ? 0
+            ? //limit of decrement(count[1-infinty])
+              item.count - 1 < 1
+              ? 1
               : item.count - 1
             : item.count,
       }))
@@ -56,7 +69,7 @@ function App() {
   const handleDelete = (id) => {
     setItems(
       items.map((item) =>
-        item.id == id ? { ...item, isInCart: false } : { ...item }
+        item.id == id ? { ...item, isInCart: false, count: 0 } : { ...item }
       )
     );
   };
@@ -72,22 +85,12 @@ function App() {
   const resetCount = () => {
     setItems(items.map((item) => ({ ...item, count: 0 })));
   };
-
-  // menu handles
-  const handleSelectedCategory = (id) => {
-    setSelectedCategory(id);
-    setSearchForItem("");
-    setNoOfPage(1);
+  //admin handlers
+  const handleAddingItem = (item) => {
+    setItems([...items, item]);
   };
-  const handleSelectedPage = (id) => {
-    setNoOfPage(id);
-  };
-  pageStart = (noOfPage - 1) * pageSize;
-
-  const handleSearchChange = (e) => {
-    setSelectedCategory(0);
-    setNoOfPage(1);
-    setSearchForItem(e.target.value);
+  const handleEditingItems = (Items) => {
+    setItems(Items);
   };
   filteredItems =
     selectedCategory == 0
@@ -99,6 +102,7 @@ function App() {
     );
   }
   const paginationNum = Math.ceil(filteredItems.length / pageSize);
+  pageStart = (noOfPage - 1) * pageSize;
   filteredItems = filteredItems.slice(pageStart, pageStart + pageSize);
 
   return (
@@ -107,38 +111,38 @@ function App() {
         items={items}
         noOfItems={items.reduce((sum, item) => sum + item.count, 0)}
       />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              loadingItems={loadingItems}
-              items={filteredItems}
-              handleAddToCart={handleAddToCart}
-              categories={categories}
-              handleSelectedCategory={handleSelectedCategory}
-              selectedCategory={selectedCategory}
-              handleSelectedPage={handleSelectedPage}
-              noOfPage={noOfPage}
-              paginationNum={paginationNum}
-              handleSearchChange={handleSearchChange}
-            />
-          }
-        />
-        <Route path="/about" element={<About />} />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              items={items}
-              handleIncrement={handleIncrement}
-              handleDecrement={handleDecrement}
-              handleDelete={handleDelete}
-              resetCount={resetCount}
-            />
-          }
-        />
-      </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
+      <ItemsContext.Provider
+        value={{
+          items,
+          isLoading,
+          filteredItems,
+          categories,
+          noOfPage,
+          paginationNum,
+          handleSelectedPage,
+          handleSearchChange,
+          handleSelectedCategory,
+          selectedCategory,
+          handleAddToCart,
+          handleIncrement,
+          handleDecrement,
+          handleDelete,
+          resetCount,
+          handleAddingItem,
+          handleEditingItems,
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Home isLoading={isLoading} />} />
+          <Route path="/admin" element={<Admin />} />
+
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/about" element={<About />} />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ItemsContext.Provider>
     </>
   );
 }
