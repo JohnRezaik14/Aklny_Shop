@@ -1,48 +1,44 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ItemsContext } from "../contexts/items";
 
-export default function MenuFilter({
-  categories,
-  handleSelectedCategory,
-  selectedCategory,
-}) {
+export default function MenuFilter() {
+  const { categories, handleSelectedCategory, selectedCategory } =
+    useContext(ItemsContext);
   return (
-    <div className="flex-1/3">
+    <div>
       {categories.length > 0 ? (
-        <div className="flex-col pl-9 pt-6">
-          <p className="text-xl font-semibold">Choose Category</p>
-          <div className="m-4">
+        <div className="flex-col text-[0.8rem]">
+          <p className="text-[0.9rem] font-semibold ">Choose Category</p>
+          <div className="my-2 ">
             {" "}
-            <label
-              htmlFor="0"
-              className="block cursor-pointer ml-4 p-2 w-fit  text-[1rem]   border-b-indigo-800 border-2 rounded-full"
-            >
+            <label htmlFor="0" className="block cursor-pointer w-[100%] ">
               <input
                 onClick={() => handleSelectedCategory(0)}
                 id="0"
                 type="radio"
-                name="radio-4"
-                className="radio radio-primary mr-3"
+                name="radio-2"
+                className="radio radio-sm radio-primary mr-1"
                 defaultChecked={selectedCategory === 0}
               />
-              <span className="font-semibold text-xl">All</span>
+              <span className="font-semibold ">All</span>
             </label>
           </div>
           {categories.map((cat) => (
-            <div className="m-4 " key={cat.id}>
+            <div className="my-2 " key={cat.id}>
               {" "}
               <label
                 htmlFor={cat.id}
-                className="block cursor-pointer ml-4 p-2 w-fit  text-[1rem]  border-b-indigo-800 border-2 rounded-full"
+                className="block cursor-pointer w-[100%]   "
               >
                 <input
                   onClick={() => handleSelectedCategory(cat.id)}
                   id={cat.id}
                   type="radio"
-                  name="radio-4"
-                  className="radio radio-primary mr-3"
+                  name="radio-2"
+                  className="radio radio-sm radio-primary mr-1 "
                   defaultChecked={selectedCategory === cat.id}
                 />
-                <span className="font-semibold text-xl">{cat.name}</span>
+                <span className="font-semibold">{cat.name}</span>
               </label>
             </div>
           ))}

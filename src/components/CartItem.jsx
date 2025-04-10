@@ -1,40 +1,41 @@
+import Delete from "./buttons/delete";
+import Minus from "./buttons/Minus";
+import Plus from "./buttons/plus";
+
 function CartItem(props) {
   return (
     <>
-      <div className="flex p-3 text-xl gap-5 mt-2 ml-2 bg-blue-100 justify-center  rounded-2xl w-[30rem]">
-        <div>
-          {" "}
+      <div className="grid grid-cols-6 p-3 mt-3 text-xl gap-5 bg-gray-200 rounded-2xl max-w-[40rem] ">
+        {/* item name */}
+        <div className=" col-span-2">
           <p>{props.name}</p>
         </div>
-        <div>
+        {/* item increment */}
+        <div
+          onClick={() => props.handleIncrement(props.id)}
+          className=" col-span-1"
+        >
+          <Plus />
+        </div>
+        {/* item count */}
+        <div className="col-span-1">
           {" "}
           <span>{props.count}</span>
         </div>
-        <div>
-          {" "}
-          <button
-            className="w-10 h-10 text-center text-3xl just  bg-blue-500 rounded-full "
-            onClick={() => props.handleIncrement(props.id)}
-          >
-            +
-          </button>
+        {/* item decrement */}
+        <div
+          className=" col-span-1 text-amber-500 "
+          onClick={() => props.handleDecrement(props.id)}
+        >
+          <Minus />
         </div>
-        <div>
-          <button
-            className="w-10 h-10 text-center bg-emerald-700 rounded-full"
-            onClick={() => props.handleDecrement(props.id)}
-          >
-            -
-          </button>
-        </div>
-        <div>
+        {/* delete item form cart */}
+        <div
+          className="text-red-900 col-span-1"
+          onClick={() => props.handleDelete(props.id)}
+        >
           {" "}
-          <button
-            className="bg-orange-500 p-1 rounded-2xl"
-            onClick={() => props.handleDelete(props.id)}
-          >
-            delete
-          </button>
+          <Delete />
         </div>
       </div>
     </>

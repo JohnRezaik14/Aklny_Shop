@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import CartItem from "./cartItem";
-export default function Cart(props) {
+import { ItemsContext } from "../contexts/items";
+export default function Cart() {
   const { items, handleIncrement, handleDecrement, handleDelete, resetCount } =
-    props;
+    useContext(ItemsContext);
   const itemsInCart = items.filter((item) => item.isInCart);
   return (
     <div>
       <div>
         {" "}
-        <div className="p-3 text-black">
+        <div className="ml-5  text-black">
           {itemsInCart.map((item) => (
             <CartItem
               key={item.id}
@@ -22,11 +23,8 @@ export default function Cart(props) {
           ))}
         </div>
         {itemsInCart.length > 0 ? (
-          <button
-            className="bg-gray-400 p-2 text-[1.2rem] m-5"
-            onClick={resetCount}
-          >
-            Reset
+          <button className="btn btn-accent ml-5 mt-3" onClick={resetCount}>
+            Reset Count
           </button>
         ) : (
           <p className="m-auto w-fit text-2xl font-semibold">
